@@ -175,16 +175,32 @@
 /* Progress Bar */
 .gov-progress {
   width: 100%;
-  height: 8px;
-  background-color: var(--gov-background);
-  border-radius: 4px;
+  height: 12px;
+  background-color: #e5e7eb;
+  border-radius: 6px;
   overflow: hidden;
+  border: 1px solid #d1d5db;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .gov-progress-bar {
   height: 100%;
-  background-color: var(--nigeria-green);
-  transition: width 0.3s ease-in-out;
+  background: linear-gradient(90deg, var(--nigeria-green) 0%, var(--nigeria-light-green) 100%);
+  transition: width 0.4s ease-in-out;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 135, 81, 0.2);
+  position: relative;
+}
+
+.gov-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+  border-radius: 6px;
 }
 
 /* Status Messages */

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Question } from '@/types/quiz';
 import { Card } from '@/components/UI/Card';
 import { Button } from '@/components/UI/Button';
@@ -11,6 +11,11 @@ interface QuestionCardProps {
 
 export function QuestionCard({ question, onAnswer, disabled = false }: QuestionCardProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
+
+  // Reset selected answer when question changes
+  useEffect(() => {
+    setSelectedAnswer('');
+  }, [question.index]);
 
   const handleOptionSelect = (option: string) => {
     if (!disabled) {
@@ -66,33 +71,42 @@ export function QuestionCard({ question, onAnswer, disabled = false }: QuestionC
       return trueFalseOptions.map((option) => (
         <div key={option} className="w-full">
           <button
-            className={`w-full p-4 text-left border-2 rounded-none transition-all duration-200 ${
+            className={`w-full p-6 text-left border-[3px] rounded-lg transition-all duration-200 ${
               selectedAnswer === option
-                ? 'border-nigeria-green bg-green-50 shadow-md'
-                : 'border-gray-300 bg-white hover:border-gray-400 hover:shadow-sm'
+                ? 'border-nigeria-green bg-nigeria-green text-white shadow-lg transform scale-105'
+                : 'border-gray-300 bg-white hover:border-gray-400 hover:shadow-sm hover:bg-gray-50'
             } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
             onClick={() => handleOptionSelect(option)}
             disabled={disabled}
             aria-pressed={selectedAnswer === option}
             aria-label={`Answer: ${option}`}
           >
-            <div className="flex items-center justify-center space-x-3">
+            <div className="flex items-center justify-center space-x-4">
               <div
-                className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${
+                className={`w-12 h-12 rounded-full border-[3px] flex items-center justify-center ${
                   selectedAnswer === option
-                    ? 'border-nigeria-green bg-nigeria-green text-white'
-                    : 'border-gray-400 bg-white'
+                    ? 'border-white bg-white text-nigeria-green shadow-inner'
+                    : 'border-gray-400 bg-white text-gray-600'
                 }`}
               >
-                <span className={`font-bold text-sm ${
-                  selectedAnswer === option ? 'text-white' : 'text-gray-600'
+                <span className={`font-bold text-xl ${
+                  selectedAnswer === option ? 'text-nigeria-green' : 'text-gray-600'
                 }`}>
                   {option === 'True' ? '✓' : '✗'}
                 </span>
               </div>
-              <span className="gov-body mb-0 font-medium text-lg">
+              <span className={`gov-body mb-0 font-bold text-xl ${
+                selectedAnswer === option ? 'text-white' : 'text-gray-800'
+              }`}>
                 {option}
               </span>
+              {selectedAnswer === option && (
+                <div className="ml-auto">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                    <span className="text-nigeria-green font-bold text-lg">●</span>
+                  </div>
+                </div>
+              )}
             </div>
           </button>
         </div>

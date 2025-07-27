@@ -209,9 +209,6 @@ function QuizPageContent() {
               <h1 className="gov-heading-l mb-1">
                 {quizConfig.category.charAt(0).toUpperCase() + quizConfig.category.slice(1).replace('-', ' ')}
               </h1>
-              <p className="gov-body-s text-gray-600">
-                Question {quizState.currentQuestionIndex + 1} of {quizConfig.totalQuestions}
-              </p>
             </div>
             <div className="text-right">
               <p className="gov-body-s text-gray-600">Score</p>
@@ -222,7 +219,7 @@ function QuizPageContent() {
           </div>
           
           <ProgressBar 
-            current={quizState.currentQuestionIndex} 
+            current={quizState.currentQuestionIndex + 1} 
             total={quizConfig.totalQuestions}
           />
         </div>
