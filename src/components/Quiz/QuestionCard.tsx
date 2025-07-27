@@ -49,7 +49,7 @@ export function QuestionCard({ question, onAnswer, disabled = false }: QuestionC
             aria-pressed={selectedAnswer === letter}
             aria-label={`Option ${letter}: ${question.options?.[index]}`}
           >
-            <div className="flex items-start space-x-3">
+            <div className="flex items-center space-x-3">
               <div
                 className={`w-8 h-8 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-1 ${
                   selectedAnswer === letter
@@ -59,7 +59,7 @@ export function QuestionCard({ question, onAnswer, disabled = false }: QuestionC
               >
                 <span className="font-bold text-sm">{letter}</span>
               </div>
-              <span className="gov-body mb-0 text-left">
+              <span className="mb-0! text-left">
                 {question.options?.[index]}
               </span>
             </div>
@@ -116,17 +116,17 @@ export function QuestionCard({ question, onAnswer, disabled = false }: QuestionC
   return (
     <div className="w-full max-w-2xl mx-auto">
       <Card className="fade-in">
-        <div className="space-y-6">
+        <div className="">
           {/* Question Title */}
           <div>
-            <h2 className="gov-heading-l">{question.title}</h2>
-            <p className="gov-body">{question.question}</p>
+            <h2 className="text-sm font-bold mb-2!">{question.title}</h2>
+            <p className="text-2xl">{question.question}</p>
           </div>
 
           {/* Answer Options */}
-          <div className="space-y-3">
-            <h3 className="gov-heading-m">Choose your answer:</h3>
-            <div className="flex items-center justify-center gap-4">
+          <div className="">
+            <h3 className="gov-heading-m mb-4!">Choose your answer:</h3>
+            <div className={`flex gap-4 ${isTrueFalse ? 'flex-row items-center justify-center' : 'flex-col'}  `}>
               {renderOptions()}
             </div>
           </div>
