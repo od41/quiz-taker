@@ -26,63 +26,106 @@ function parseQuestionBlock(block: string, category: string): Question | null {
     const options: string[] = [];
     let correctAnswer = '';
     let explanation = '';
+    let questionType: 'multiple-choice' | 'true-false' = 'multiple-choice';
     
     let currentSection = 'index';
     
-    for (const line of lines) {
+    // First pass: detect question type by looking for Answer: True/False pattern
+    const answerLine = lines.find(line => line.startsWith('Answer:'));
+    if (answerLine) {
+      const answerValue = answerLine.replace('Answer:', '').trim();
+      if (answerValue === 'True' || answerValue === 'False') {
+        questionType = 'true-false';
+      }
+    }
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      
       // Parse index
       if (line.startsWith('Index:')) {
         index = line.replace('Index:', '').trim();
         continue;
       }
       
-      // Parse title (## format)
-      if (line.startsWith('##')) {
-        title = line.replace(/^#+\s*/, '').trim();
-        currentSection = 'question';
-        continue;
+      // Parse title
+      if (questionType === 'multiple-choice') {
+        // Multiple choice: title starts with ##
+        if (line.startsWith('##')) {
+          title = line.replace(/^#+\s*/, '').trim();
+          currentSection = 'question';
+          continue;
+        }
+      } else {
+        // True/false: title is the first line after index (no ## prefix)
+        if (index && !title && !line.startsWith('Answer:') && !line.startsWith('Explanation:')) {
+          title = line;
+          currentSection = 'question';
+          continue;
+        }
       }
       
       // Parse answer
-      if (line.startsWith('**Answer:**')) {
-        correctAnswer = line.replace('**Answer:**', '').trim();
+      if (line.startsWith('Answer:')) {
+        correctAnswer = line.replace('Answer:', '').trim();
         currentSection = 'answer';
         continue;
       }
       
       // Parse explanation
-      if (line.startsWith('**Explanation:**')) {
-        explanation = line.replace('**Explanation:**', '').trim();
+      if (line.startsWith('**Explanation:**') || line.startsWith('Explanation:')) {
+        explanation = line.replace(/\*\*Explanation:\*\*|Explanation:/, '').trim();
         currentSection = 'explanation';
         continue;
       }
       
-      // Parse options (A), B), C), D))
-      if (/^[A-D]\)\s/.test(line)) {
+      // Parse options for multiple choice (A), B), C), D))
+      if (questionType === 'multiple-choice' && /^[A-D]\)\s/.test(line)) {
         const optionText = line.replace(/^[A-D]\)\s*/, '').trim();
         options.push(optionText);
         continue;
       }
       
       // Add to current section
-      if (currentSection === 'question' && line && !line.startsWith('A)')) {
+      if (currentSection === 'question' && line && !line.startsWith('A)') && !line.startsWith('Answer:') && !line.startsWith('Explanation:')) {
         question += (question ? ' ' : '') + line;
       } else if (currentSection === 'explanation' && line) {
         explanation += (explanation ? ' ' : '') + line;
       }
     }
     
-    // Validate required fields
-    if (!index || !title || !question || options.length !== 4 || !correctAnswer || !explanation) {
-      console.warn('Invalid question block:', { index, title, question: question.slice(0, 50), optionsCount: options.length, correctAnswer, explanation: explanation.slice(0, 50) });
-      return null;
+    // Validate required fields based on question type
+    if (questionType === 'multiple-choice') {
+      if (!index || !title || !question || options.length !== 4 || !correctAnswer || !explanation) {
+        console.warn('Invalid multiple choice question block:', { 
+          index, title, question: question.slice(0, 50), 
+          optionsCount: options.length, correctAnswer, 
+          explanation: explanation.slice(0, 50) 
+        });
+        return null;
+      }
+    } else {
+      // True/false validation
+      if (!index || !title || !question || !correctAnswer || !explanation) {
+        console.warn('Invalid true/false question block:', { 
+          index, title, question: question.slice(0, 50), 
+          correctAnswer, explanation: explanation.slice(0, 50) 
+        });
+        return null;
+      }
+      
+      if (correctAnswer !== 'True' && correctAnswer !== 'False') {
+        console.warn('Invalid true/false answer:', correctAnswer);
+        return null;
+      }
     }
     
     return {
       index,
       title,
       question,
-      options,
+      type: questionType,
+      options: questionType === 'multiple-choice' ? options : undefined,
       correctAnswer,
       explanation,
       category
@@ -125,42 +168,44 @@ export async function getAvailableCategories(): Promise<QuizCategory[]> {
   // For now, we'll return predefined categories
   return [
     {
-      id: 'constitutional-law',
-      name: 'Constitutional Law',
-      description: 'Questions about Nigeria\'s constitutional framework and governance',
-      questionCount: 0 // Will be populated when questions are loaded
+      id: 'general-knowledge',
+      name: 'General Knowledge',
+      description: 'Questions about general knowledge',
+      questionCount: 0
     },
     {
       id: 'public-administration',
       name: 'Public Administration',
       description: 'Questions about public service management and administration',
       questionCount: 0
-    },
-    {
-      id: 'ethics',
-      name: 'Ethics & Conduct',
-      description: 'Questions about ethical standards and professional conduct',
-      questionCount: 0
-    },
-    {
-      id: 'financial-management',
-      name: 'Financial Management',
-      description: 'Questions about government financial procedures and budgeting',
-      questionCount: 0
     }
   ];
 }
 
 export function validateQuestion(question: Question): boolean {
-  return !!(
+  // Common validation for all question types
+  const baseValidation = !!(
     question.index &&
     question.title &&
     question.question &&
-    question.options &&
-    question.options.length === 4 &&
     question.correctAnswer &&
-    ['A', 'B', 'C', 'D'].includes(question.correctAnswer) &&
     question.explanation &&
-    question.category
+    question.category &&
+    question.type
   );
+  
+  if (!baseValidation) return false;
+  
+  // Type-specific validation
+  if (question.type === 'multiple-choice') {
+    return !!(
+      question.options &&
+      question.options.length === 4 &&
+      ['A', 'B', 'C', 'D'].includes(question.correctAnswer)
+    );
+  } else if (question.type === 'true-false') {
+    return ['True', 'False'].includes(question.correctAnswer);
+  }
+  
+  return false;
 } 

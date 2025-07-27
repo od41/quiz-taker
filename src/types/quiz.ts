@@ -2,7 +2,8 @@ export interface Question {
   index: string;
   title: string;
   question: string;
-  options: string[];
+  type: 'multiple-choice' | 'true-false';
+  options?: string[]; // Optional for true/false questions
   correctAnswer: string;
   explanation: string;
   category: string;
