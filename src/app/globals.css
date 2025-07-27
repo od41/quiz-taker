@@ -12,10 +12,33 @@
   --font-sans: "nta", Arial, sans-serif;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  padding: 0;
+}
+
+/* Reset margins and padding only on elements that typically have them */
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+dl, dd, ol, ul, figure,
+hr, fieldset, legend {
   margin: 0;
+  padding: 0;
+}
+
+/* Reset list styles */
+ol, ul {
+  list-style: none;
+}
+
+/* Reset form elements */
+input, textarea, select {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
 }
 
 html, body {
