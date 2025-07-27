@@ -53,7 +53,7 @@
   font-size: 1.25rem;
   line-height: 1.25;
   font-weight: 700;
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 0.01rem 0;
   color: var(--gov-text);
 }
 
@@ -290,4 +290,90 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Utility Classes for Custom Colors */
+/* Background Colors */
+.bg-nigeria-green {
+  background-color: var(--nigeria-green) !important;
+}
+
+.bg-nigeria-white {
+  background-color: var(--nigeria-white) !important;
+}
+
+.bg-nigeria-dark-green {
+  background-color: var(--nigeria-dark-green) !important;
+}
+
+.bg-nigeria-light-green {
+  background-color: var(--nigeria-light-green) !important;
+}
+
+.bg-gov-background {
+  background-color: var(--gov-background) !important;
+}
+
+/* Text Colors */
+.text-nigeria-green {
+  color: var(--nigeria-green) !important;
+}
+
+.text-nigeria-white {
+  color: var(--nigeria-white) !important;
+}
+
+.text-nigeria-dark-green {
+  color: var(--nigeria-dark-green) !important;
+}
+
+.text-nigeria-light-green {
+  color: var(--nigeria-light-green) !important;
+}
+
+.text-gov-text {
+  color: var(--gov-text) !important;
+}
+
+.text-gov-text-secondary {
+  color: var(--gov-text-secondary) !important;
+}
+
+/* Border Colors */
+.border-nigeria-green {
+  border-color: var(--nigeria-green) !important;
+}
+
+.border-nigeria-white {
+  border-color: var(--nigeria-white) !important;
+}
+
+.border-nigeria-dark-green {
+  border-color: var(--nigeria-dark-green) !important;
+}
+
+.border-nigeria-light-green {
+  border-color: var(--nigeria-light-green) !important;
+}
+
+.border-gov-border {
+  border-color: var(--gov-border) !important;
+}
+
+/* Ring Colors */
+.ring-nigeria-green {
+  --tw-ring-color: var(--nigeria-green) !important;
+}
+
+/* Hover States */
+.hover\:bg-nigeria-green:hover {
+  background-color: var(--nigeria-green) !important;
+}
+
+.hover\:text-nigeria-green:hover {
+  color: var(--nigeria-green) !important;
+}
+
+.hover\:border-nigeria-green:hover {
+  border-color: var(--nigeria-green) !important;
 } 

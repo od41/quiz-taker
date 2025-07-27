@@ -136,7 +136,7 @@ export default function CategoriesPage() {
                   </p>
                   <div className="flex items-center justify-between">
                     <span className="gov-body-s font-medium text-nigeria-green">
-                      Available Questions: 20+
+                      Available Questions: {category.questionCount}
                     </span>
                     {selectedCategory === category.id && (
                       <div className="w-6 h-6 bg-nigeria-green rounded-full flex items-center justify-center">

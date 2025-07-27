@@ -48,21 +48,11 @@ function parseQuestionBlock(block: string, category: string): Question | null {
         continue;
       }
       
-      // Parse title
-      if (questionType === 'multiple-choice') {
-        // Multiple choice: title starts with ##
-        if (line.startsWith('##')) {
-          title = line.replace(/^#+\s*/, '').trim();
-          currentSection = 'question';
-          continue;
-        }
-      } else {
-        // True/false: title is the first line after index (no ## prefix)
-        if (index && !title && !line.startsWith('Answer:') && !line.startsWith('Explanation:')) {
-          title = line;
-          currentSection = 'question';
-          continue;
-        }
+      // Parse title (both multiple choice and true/false have the same format)
+      if (index && !title && !line.startsWith('Answer:') && !line.startsWith('Explanation:') && !line.match(/^[A-D]\)/)) {
+        title = line;
+        currentSection = 'question';
+        continue;
       }
       
       // Parse answer
@@ -164,22 +154,33 @@ export async function loadAllQuestions(): Promise<Question[]> {
 }
 
 export async function getAvailableCategories(): Promise<QuizCategory[]> {
-  // In a real app, this would dynamically scan the questions directory
-  // For now, we'll return predefined categories
-  return [
+  const categories = [
     {
-      id: 'general-knowledge',
+      id: 'general',
       name: 'General Knowledge',
-      description: 'Questions about general knowledge',
+      description: 'Questions about general civil service knowledge and procedures',
       questionCount: 0
     },
     {
       id: 'public-administration',
       name: 'Public Administration',
-      description: 'Questions about public service management and administration',
+      description: 'Questions about public service management, rules, and administration',
       questionCount: 0
     }
   ];
+
+  // Load actual question counts for each category
+  for (const category of categories) {
+    try {
+      const questions = await loadQuestionsFromCategory(category.id);
+      category.questionCount = questions.length;
+    } catch (error) {
+      console.error(`Error loading questions for ${category.id}:`, error);
+      category.questionCount = 0;
+    }
+  }
+
+  return categories;
 }
 
 export function validateQuestion(question: Question): boolean {

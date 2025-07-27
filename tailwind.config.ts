@@ -6,6 +6,28 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    // Ensure custom color classes are always generated
+    'bg-nigeria-green',
+    'text-nigeria-green',
+    'border-nigeria-green',
+    'ring-nigeria-green',
+    'bg-nigeria-white',
+    'text-nigeria-white',
+    'bg-nigeria-dark-green',
+    'text-nigeria-dark-green',
+    'bg-nigeria-light-green',
+    'text-nigeria-light-green',
+    'bg-gov-background',
+    'text-gov-text',
+    'text-gov-text-secondary',
+    'border-gov-border',
+    // Hover and focus variants
+    'hover:bg-nigeria-green',
+    'hover:text-nigeria-green',
+    'hover:border-nigeria-green',
+    'focus:ring-nigeria-green',
+  ],
   theme: {
     extend: {
       colors: {

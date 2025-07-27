@@ -69,11 +69,11 @@ export function QuestionCard({ question, onAnswer, disabled = false }: QuestionC
     } else if (isTrueFalse) {
       const trueFalseOptions = ['True', 'False'];
       return trueFalseOptions.map((option) => (
-        <div key={option} className="w-full">
+        <div key={option} className="w-1/2">
           <button
-            className={`w-full p-6 text-left border-[3px] rounded-lg transition-all duration-200 ${
+            className={`w-full p-3 text-left rounded-lg transition-all duration-200 ${
               selectedAnswer === option
-                ? 'border-nigeria-green bg-nigeria-green text-white shadow-lg transform scale-105'
+                ? 'border-3 border-nigeria-green shadow-lg transform scale-105'
                 : 'border-gray-300 bg-white hover:border-gray-400 hover:shadow-sm hover:bg-gray-50'
             } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
             onClick={() => handleOptionSelect(option)}
@@ -82,7 +82,7 @@ export function QuestionCard({ question, onAnswer, disabled = false }: QuestionC
             aria-label={`Answer: ${option}`}
           >
             <div className="flex items-center justify-center space-x-4">
-              <div
+              {/* <div
                 className={`w-12 h-12 rounded-full border-[3px] flex items-center justify-center ${
                   selectedAnswer === option
                     ? 'border-white bg-white text-nigeria-green shadow-inner'
@@ -94,17 +94,15 @@ export function QuestionCard({ question, onAnswer, disabled = false }: QuestionC
                 }`}>
                   {option === 'True' ? '✓' : '✗'}
                 </span>
-              </div>
-              <span className={`gov-body mb-0 font-bold text-xl ${
-                selectedAnswer === option ? 'text-white' : 'text-gray-800'
+              </div> */}
+              <span className={`gov-bodyyy font-bold text-md ${
+                selectedAnswer === option ? 'text-nigeria-green' : 'text-gray-800'
               }`}>
                 {option}
               </span>
               {selectedAnswer === option && (
-                <div className="ml-auto">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                    <span className="text-nigeria-green font-bold text-lg">●</span>
-                  </div>
+                <div className="">
+                  <span className="text-nigeria-green font-bold text-lg">●</span>
                 </div>
               )}
             </div>
@@ -128,7 +126,9 @@ export function QuestionCard({ question, onAnswer, disabled = false }: QuestionC
           {/* Answer Options */}
           <div className="space-y-3">
             <h3 className="gov-heading-m">Choose your answer:</h3>
-            {renderOptions()}
+            <div className="flex items-center justify-center gap-4">
+              {renderOptions()}
+            </div>
           </div>
 
           {/* Submit Button */}
