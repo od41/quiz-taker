@@ -162,6 +162,24 @@ export async function getAvailableCategories(): Promise<QuizCategory[]> {
       questionCount: 0
     },
     {
+      id: 'education',
+      name: 'Education',
+      description: 'Questions about education',
+      questionCount: 0
+    },
+    {
+      id: 'finance',
+      name: 'Financial',
+      description: 'Questions about financial',
+      questionCount: 0
+    },
+    {
+      id: 'civil_service',
+      name: 'Civil Service',
+      description: 'Questions about civil service',
+      questionCount: 0
+    },  
+    {
       id: 'public-administration',
       name: 'Public Administration',
       description: 'Questions about public service management, rules, and administration',
