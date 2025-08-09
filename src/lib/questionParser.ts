@@ -168,6 +168,12 @@ export async function getAvailableCategories(): Promise<QuizCategory[]> {
       questionCount: 0
     },
     {
+      id: 'current_affairs',
+      name: 'Current Affairs',
+      description: 'Questions about current affairs',
+      questionCount: 0
+    },
+    {
       id: 'finance',
       name: 'Financial',
       description: 'Questions about financial',
